@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<actions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:shemas-jetbrains-com:actions-xml">
+  <action id="PasteJavaSnippet" text="Paste Java Code" scope="TextEditor" >
+    <shortcut>Shift+Control+J</shortcut>
+  </action>
+  <action-group id="ReSharper.Edit" text="&amp;Edit" >
+    <action-ref id="PasteJavaSnippet" />
+  </action-group>
+</actions>
