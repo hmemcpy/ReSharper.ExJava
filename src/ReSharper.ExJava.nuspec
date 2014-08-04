@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>ReSharper.ExJava</id>
+    <version>$version$</version>
+    <authors>Igal Tabachnik</authors>
+    <owners>Igal Tabachnik</owners>
+    <title>ReSharper.ExJava</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://raw.github.com/hmemcpy/ReSharper.ExJava/master/License.txt</licenseUrl>
+    <description>TBD. For Itamar :)</description>
+    <releaseNotes>Initial release</releaseNotes>
+    <projectUrl>https://github.com/hmemcpy/ReSharper.ExJava</projectUrl>
+    <iconUrl>https://raw.github.com/hmemcpy/ReSharper.ExJava/master/logo.png</iconUrl>
+    <copyright>Copyright &#x00A9; 2014 Igal Tabachnik</copyright>
+    <tags>resharper internalsvisibleto publickey tests unit test nunit mstest xunit</tags>
+    <dependencies>
+      <dependency id="Resharper" version="[8.2,8.3)"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\output\$configuration$\8.2\*.*" target="ReSharper\v8.2\plugins"/>
+  </files>
+</package>
