@@ -21,9 +21,12 @@ namespace ReSharper.ExJava.Tests
         }
 
         [Fact]
-        public void JavaMethodsAreNotVirtualByDefault()
+        public void MethodsAreNotVirtualByDefault()
         {
-            
+            string java = "public void foo() {}";
+            string result = JavaSnippetParser.Parse(java);
+
+            result.ShouldNotContain("virtual");
         }
     }
 }
