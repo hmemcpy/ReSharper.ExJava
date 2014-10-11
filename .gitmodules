@@ -1,3 +1,0 @@
-[submodule "src/JavaToCSharp"]
-	path = src/JavaToCSharp
-	url = git@github.com:hmemcpy/JavaToCSharp.git
