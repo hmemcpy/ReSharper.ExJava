@@ -30,7 +30,7 @@ namespace ReSharper.ExJava
                 {
                     if (currentBindings[0].ToString() == keyboardShortcut)
                     {
-                        GetOutputWindowPane(dte, "TestCop", true).OutputString(
+                        GetOutputWindowPane(dte, "ReSharper", true).OutputString(
                             string.Format("Keyboard shortcut for '{0}' is '{1}'\n", macroName, keyboardShortcut));
                         return;
                     }

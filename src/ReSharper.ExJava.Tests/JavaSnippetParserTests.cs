@@ -91,6 +91,7 @@ namespace ReSharper.ExJava.Tests
 
         [TestCase("Integer[] ii = new Integer[1]", "int[] ii = new int[1]")]
         [TestCase("Boolean[] ii = new Boolean[1]", "bool[] ii = new bool[1]")]
+        [TestCase("Boolean retardedArray[] = new Boolean[1]", "bool[] retardedArray = new bool[1]")]
         public void PrimitiveArrayWrappersCorrectlyConverted(string javaPrimitive, string csharpPrimitive)
         {
             string java = string.Format("public void foo() {{ {0}; }}", javaPrimitive);
@@ -99,7 +100,5 @@ namespace ReSharper.ExJava.Tests
 
             result.ShouldContain(csharpPrimitive);
         }
-
-
     }
 }
