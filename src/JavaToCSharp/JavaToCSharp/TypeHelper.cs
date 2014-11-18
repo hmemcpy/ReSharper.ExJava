@@ -1,4 +1,5 @@
 ﻿using com.sun.org.apache.bcel.@internal.generic;
+using ikvm.extensions;
 using japa.parser.ast.expr;
 using japa.parser.ast.type;
 using Roslyn.Compilers.CSharp;
@@ -14,6 +15,10 @@ namespace JavaToCSharp
     {
         public static string ConvertType(string typeName)
         {
+            // horrible hack
+            if (typeName.EndsWith("[]"))
+                return ConvertType(typeName.Substring(0, typeName.Length - 2)) + "[]";
+
             switch (typeName)
             {
                 case "RuntimeException":
