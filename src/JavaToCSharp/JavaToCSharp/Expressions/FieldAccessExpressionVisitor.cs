@@ -20,7 +20,13 @@ namespace JavaToCSharp.Expressions
                 scopeSyntax = VisitExpression(context, scope);
             }
 
-            var field = TypeHelper.ConvertScopedIdentifierName(scopeSyntax, fieldAccessExpr.getField());
+            var identifierScope = scopeSyntax as IdentifierNameSyntax;
+            if (identifierScope != null)
+            {
+                scopeSyntax = Syntax.IdentifierName(TypeHelper.ConvertType(identifierScope.Identifier.ValueText));
+            }
+
+            string field = TypeHelper.ConvertScopedIdentifierName(scopeSyntax, fieldAccessExpr.getField());
 
             return Syntax.MemberAccessExpression(SyntaxKind.MemberAccessExpression, scopeSyntax, Syntax.IdentifierName(field));
         }

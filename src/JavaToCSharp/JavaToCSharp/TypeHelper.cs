@@ -1,13 +1,9 @@
-﻿using com.sun.org.apache.bcel.@internal.generic;
-using ikvm.extensions;
-using japa.parser.ast.expr;
+﻿using System.Globalization;
+using System.Threading;
 using japa.parser.ast.type;
 using Roslyn.Compilers.CSharp;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JavaToCSharp
 {
@@ -31,6 +27,8 @@ namespace JavaToCSharp
                     return "bool";
                 case "String":
                     return "string";
+                case "Long":
+                    return "long";
                 case "Character":
                     return "char";
                 case "UnsupportedOperationException":
@@ -98,14 +96,43 @@ namespace JavaToCSharp
             switch (name)
             {
                 case "out":
-                    var identifierScope = scope as IdentifierNameSyntax;
-                    if (identifierScope != null && identifierScope.Identifier.ValueText == "System")
+                    if (scope.ToString()  == "System")
                         return "Console";
+                    goto default;
+                case "MAX_VALUE":
+                case "MIN_VALUE":
+                    switch (scope.ToString())
+                    {
+                        case "int":
+                        case "long":
+                            return Humanize(name);
+                    }
                     goto default;
                 default:
                     return ConvertIdentifierName(name);
             }
         }
+
+        private static string Humanize(string name)
+        {
+            return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(name.Replace("_", ""));
+        }
+
+        public static bool IsPrimitive(this ExpressionSyntax argSyntax)
+        {
+            switch (argSyntax.Kind)
+            {
+                case SyntaxKind.NumericLiteralExpression:
+                case SyntaxKind.StringLiteralExpression:
+                case SyntaxKind.CharacterLiteralExpression:
+                case SyntaxKind.TrueLiteralExpression:
+                case SyntaxKind.FalseLiteralExpression:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
 
         public static string ReplaceCommonMethodNames(string name)
         {

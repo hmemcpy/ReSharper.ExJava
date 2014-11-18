@@ -100,5 +100,18 @@ namespace ReSharper.ExJava.Tests
 
             result.ShouldContain(csharpPrimitive);
         }
+
+        [TestCase("Integer i = Integer.MAX_VALUE", "int i = int.MaxValue")]
+        [TestCase("Integer i = Integer.MIN_VALUE", "int i = int.MinValue")]
+        [TestCase("Long i = Long.MIN_VALUE", "long i = long.MinValue")]
+        [TestCase("Long i = Long.MAX_VALUE", "long i = long.MaxValue")]
+        public void MaxValueCorrectlyConverted(string javaPrimitive, string csharpPrimitive)
+        {
+            string java = string.Format("public void foo() {{ {0}; }}", javaPrimitive);
+
+            string result = JavaSnippetParser.Parse(java);
+
+            result.ShouldContain(csharpPrimitive);
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace JavaToCSharp.Expressions
             foreach (var arg in args)
             {
                 var argSyntax = VisitExpression(context, arg);
-                if (IsPrimitive(argSyntax))
+                if (argSyntax.IsPrimitive())
                 {
                     return argSyntax;
                 }
@@ -52,21 +52,6 @@ namespace JavaToCSharp.Expressions
             }
 
             return Syntax.ObjectCreationExpression(typeSyntax, Syntax.ArgumentList(Syntax.SeparatedList(argSyntaxes, Enumerable.Repeat(Syntax.Token(SyntaxKind.CommaToken), argSyntaxes.Count - 1))), null);
-        }
-
-        private bool IsPrimitive(ExpressionSyntax argSyntax)
-        {
-            switch (argSyntax.Kind)
-            {
-                case SyntaxKind.NumericLiteralExpression:
-                case SyntaxKind.StringLiteralExpression:
-                case SyntaxKind.CharacterLiteralExpression:
-                case SyntaxKind.TrueLiteralExpression:
-                case SyntaxKind.FalseLiteralExpression:
-                    return true;
-                default:
-                    return false;
-            }
         }
 
         private static ExpressionSyntax VisitAnonymousClassCreationExpression(ConversionContext context, ObjectCreationExpr newExpr, List<BodyDeclaration> anonBody)
