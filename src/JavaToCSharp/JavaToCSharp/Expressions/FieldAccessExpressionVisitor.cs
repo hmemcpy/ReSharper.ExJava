@@ -17,10 +17,10 @@ namespace JavaToCSharp.Expressions
 
             if (scope != null)
             {
-                scopeSyntax = ExpressionVisitor.VisitExpression(context, scope);
+                scopeSyntax = VisitExpression(context, scope);
             }
 
-            var field = TypeHelper.ConvertIdentifierName(fieldAccessExpr.getField());
+            var field = TypeHelper.ConvertScopedIdentifierName(scopeSyntax, fieldAccessExpr.getField());
 
             return Syntax.MemberAccessExpression(SyntaxKind.MemberAccessExpression, scopeSyntax, Syntax.IdentifierName(field));
         }

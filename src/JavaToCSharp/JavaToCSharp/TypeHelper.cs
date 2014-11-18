@@ -1,4 +1,6 @@
-﻿using japa.parser.ast.type;
+﻿using com.sun.org.apache.bcel.@internal.generic;
+using japa.parser.ast.expr;
+using japa.parser.ast.type;
 using Roslyn.Compilers.CSharp;
 using System;
 using System.Collections.Generic;
@@ -81,6 +83,23 @@ namespace JavaToCSharp
             }
         }
 
+        public static string ConvertScopedIdentifierName(ExpressionSyntax scope, string name)
+        {
+            if (scope == null)
+                return ConvertIdentifierName(name);
+
+            switch (name)
+            {
+                case "out":
+                    var identifierScope = scope as IdentifierNameSyntax;
+                    if (identifierScope != null && identifierScope.Identifier.ValueText == "System")
+                        return "Console";
+                    goto default;
+                default:
+                    return ConvertIdentifierName(name);
+            }
+        }
+
         public static string ReplaceCommonMethodNames(string name)
         {
             switch (name.ToLower())
@@ -89,6 +108,8 @@ namespace JavaToCSharp
                     return "GetHashCode";
                 case "getclass":
                     return "GetType";
+                case "println":
+                    return "WriteLine";
                 default:
                     return name;
             }

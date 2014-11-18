@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using JavaToCSharp;
 using Shouldly;
 using Xunit;
@@ -37,6 +39,21 @@ namespace ReSharper.ExJava.Tests
 @"public class Example
 {
 }";
+            string result = JavaSnippetParser.Parse(java);
+
+            result.ShouldBe(csharp);
+        }
+
+        [Fact]
+        public void SysoConverterToConsoleWriteline()
+        {
+            string java = "public void foo() { System.out.println(\"hello\"); }";
+            string csharp = 
+@"public void Foo()
+{
+    System.Console.WriteLine(@""hello"");
+}";
+
             string result = JavaSnippetParser.Parse(java);
 
             result.ShouldBe(csharp);

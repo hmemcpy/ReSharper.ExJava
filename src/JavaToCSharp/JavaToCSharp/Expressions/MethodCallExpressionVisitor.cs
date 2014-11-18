@@ -17,7 +17,7 @@ namespace JavaToCSharp.Expressions
 
             if (scope != null)
             {
-                scopeSyntax = ExpressionVisitor.VisitExpression(context, scope);
+                scopeSyntax = VisitExpression(context, scope);
             }
 
             var methodName = TypeHelper.Capitalize(methodCallExpr.getName());
@@ -43,7 +43,7 @@ namespace JavaToCSharp.Expressions
 
             foreach (var arg in args)
             {
-                var argSyntax = ExpressionVisitor.VisitExpression(context, arg);
+                var argSyntax = VisitExpression(context, arg);
                 argSyntaxes.Add(Syntax.Argument(argSyntax));
             }
 
