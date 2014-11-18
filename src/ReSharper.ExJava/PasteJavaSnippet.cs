@@ -15,6 +15,21 @@ namespace ReSharper.ExJava
     [ActionHandler("PasteJavaSnippet")]
     public class PasteJavaSnippet : IActionHandler
     {
+        private const string VsActionName = "ReSharper_PasteJavaSnippet";
+        private const string VsShortcut = "Global::Shift+Ctrl+J";
+
+        public PasteJavaSnippet()
+        {
+            ExecuteActionOnUiThread("Force PasteJavaSnippet keyboard shortcut hack on every startup",
+                () => VisualStudioHelper.AssignKeyboardShortcutIfMissing(VsActionName, VsShortcut));
+        }
+
+        private void ExecuteActionOnUiThread(string description, Action action)
+        {
+            var threading = Shell.Instance.GetComponent<IThreading>();
+            threading.ReentrancyGuard.ExecuteOrQueueEx(description, action);
+        }
+
         public bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
         {
             return true;
@@ -26,12 +41,14 @@ namespace ReSharper.ExJava
             string contents = TryGetString(dataObject);
             if (string.IsNullOrWhiteSpace(contents))
             {
+                LogConsole("Unable to get contents from clipboard.");
                 return;
             }
 
             var csharpCode = TryConvertJavaToCSharp(contents);
             if (string.IsNullOrWhiteSpace(csharpCode))
             {
+                LogConsole("Unable to convert snippet to Java code.");
                 return;
             }
 
@@ -48,9 +65,15 @@ namespace ReSharper.ExJava
             {
                 Logger.LogMessage("Failed to convert Java code to C#");
                 Logger.LogExceptionSilently(ex);
+                LogConsole(ex.ToString());
             }
 
             return null;
+        }
+
+        private static void LogConsole(string message)
+        {
+            VisualStudioHelper.GetOutputWindowPane("ReSharper", true).OutputString(message);
         }
 
         private static void Paste(string text)
