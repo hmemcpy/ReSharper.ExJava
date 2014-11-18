@@ -1,12 +1,11 @@
-﻿using japa.parser.ast.body;
+﻿using com.sun.org.apache.bcel.@internal.generic;
+using japa.parser.ast.body;
 using japa.parser.ast.expr;
 using JavaToCSharp.Declarations;
 using Roslyn.Compilers.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JavaToCSharp.Expressions
 {
@@ -26,7 +25,7 @@ namespace JavaToCSharp.Expressions
 
             if (scope != null)
             {
-                scopeSyntax = ExpressionVisitor.VisitExpression(context, scope);
+                scopeSyntax = VisitExpression(context, scope);
             }
 
             // TODO: what to do with scope?
@@ -44,11 +43,30 @@ namespace JavaToCSharp.Expressions
 
             foreach (var arg in args)
             {
-                var argSyntax = ExpressionVisitor.VisitExpression(context, arg);
+                var argSyntax = VisitExpression(context, arg);
+                if (IsPrimitive(argSyntax))
+                {
+                    return argSyntax;
+                }
                 argSyntaxes.Add(Syntax.Argument(argSyntax));
             }
 
             return Syntax.ObjectCreationExpression(typeSyntax, Syntax.ArgumentList(Syntax.SeparatedList(argSyntaxes, Enumerable.Repeat(Syntax.Token(SyntaxKind.CommaToken), argSyntaxes.Count - 1))), null);
+        }
+
+        private bool IsPrimitive(ExpressionSyntax argSyntax)
+        {
+            switch (argSyntax.Kind)
+            {
+                case SyntaxKind.NumericLiteralExpression:
+                case SyntaxKind.StringLiteralExpression:
+                case SyntaxKind.CharacterLiteralExpression:
+                case SyntaxKind.TrueLiteralExpression:
+                case SyntaxKind.FalseLiteralExpression:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         private static ExpressionSyntax VisitAnonymousClassCreationExpression(ConversionContext context, ObjectCreationExpr newExpr, List<BodyDeclaration> anonBody)

@@ -1,10 +1,6 @@
 ﻿using japa.parser.ast.expr;
 using Roslyn.Compilers.CSharp;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JavaToCSharp.Expressions
 {
@@ -16,8 +12,15 @@ namespace JavaToCSharp.Expressions
 
             if (value.StartsWith("0x"))
                 return Syntax.LiteralExpression(SyntaxKind.NumericLiteralExpression, Syntax.Literal(value, Convert.ToInt32(value.Substring(2), 16)));
-            else
-                return Syntax.LiteralExpression(SyntaxKind.NumericLiteralExpression, Syntax.Literal(int.Parse(expr.toString())));
+
+            int intValue;
+            if (int.TryParse(value, out intValue))
+                return Syntax.LiteralExpression(SyntaxKind.NumericLiteralExpression, Syntax.Literal(intValue));
+            long longValue;
+            if (long.TryParse(value, out longValue))
+                return Syntax.LiteralExpression(SyntaxKind.NumericLiteralExpression, Syntax.Literal(longValue));
+
+            return Syntax.LiteralExpression(SyntaxKind.NumericLiteralExpression, Syntax.Literal(value));
         }
     }
 }

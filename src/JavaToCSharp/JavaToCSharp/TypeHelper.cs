@@ -26,6 +26,8 @@ namespace JavaToCSharp
                     return "bool";
                 case "String":
                     return "string";
+                case "Character":
+                    return "char";
                 case "UnsupportedOperationException":
                     return "NotSupportedException";
                 case "IllegalArgumentException":
