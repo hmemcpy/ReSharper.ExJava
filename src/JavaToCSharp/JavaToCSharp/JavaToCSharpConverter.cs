@@ -1,25 +1,15 @@
 ﻿using japa.parser;
 using japa.parser.ast;
 using japa.parser.ast.body;
-using japa.parser.ast.expr;
-using japa.parser.ast.stmt;
 using japa.parser.ast.type;
-using japa.parser.ast.visitor;
-using java.io;
 using java.lang.reflect;
 using JavaToCSharp.Declarations;
-using Roslyn.Compilers.Common;
 using Roslyn.Compilers.CSharp;
-using Roslyn.Services;
-using Roslyn.Services.Formatting;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace JavaToCSharp
 {
@@ -46,8 +36,13 @@ namespace JavaToCSharp
                 options.ConversionStateChanged(ConversionState.BuildingCSharpAST);
 
                 var types = parsed.getTypes().ToList<TypeDeclaration>();
-                var imports = parsed.getImports().ToList<ImportDeclaration>();
+                var imports = parsed.getImports();
+                if (imports == null || imports.isEmpty())
+                    options.IncludeUsings = false;
+
                 var package = parsed.getPackage();
+                if (package == null)
+                    options.IncludeNamespace = false;
 
                 var usings = new List<UsingDirectiveSyntax>();
 

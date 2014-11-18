@@ -8,12 +8,6 @@ namespace JavaToCSharp
 {
     public class JavaConversionOptions
     {
-        public JavaConversionOptions()
-        {
-            this.IncludeNamespace = true;
-            this.IncludeUsings = true;
-        }
-
         private readonly IList<Replacement> _packageReplacements = new List<Replacement>();
 
         public event EventHandler<ConversionWarningEventArgs> WarningEncountered;
@@ -47,6 +41,13 @@ namespace JavaToCSharp
         public ConversionState ConversionState { get; set; }
 
         public bool IncludeClass { get; set; }
+
+        public JavaConversionOptions()
+        {
+            IncludeUsings = true;
+            IncludeNamespace = true;
+            IncludeClass = true;
+        }
 
         public JavaConversionOptions AddPackageReplacement(string pattern, string replacement, RegexOptions options = RegexOptions.None)
         {

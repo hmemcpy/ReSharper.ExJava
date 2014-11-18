@@ -1,3 +1,4 @@
+using System;
 using System.Text.RegularExpressions;
 using japa.parser;
 
@@ -20,7 +21,13 @@ namespace JavaToCSharp
                 if (Regex.IsMatch(e.Message, method_regex))
                 {
                     string w = "public class foo {\n" + code + "\n}";
-                    return Parse(w, new JavaConversionOptions { IncludeNamespace = false, IncludeUsings = false, IncludeClass = false });
+                    return Parse(w,
+                        new JavaConversionOptions
+                        {
+                            IncludeNamespace = false,
+                            IncludeUsings = false,
+                            IncludeClass = false
+                        });
                 }
             }
 

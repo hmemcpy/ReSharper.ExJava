@@ -28,5 +28,18 @@ namespace ReSharper.ExJava.Tests
 
             result.ShouldNotContain("virtual");
         }
+
+        [Fact]
+        public void CanParseClassesWithoutPackage()
+        {
+            string java = "public class Example {}";
+            string csharp = 
+@"public class Example
+{
+}";
+            string result = JavaSnippetParser.Parse(java);
+
+            result.ShouldBe(csharp);
+        }
     }
 }
